@@ -254,6 +254,56 @@
   font-size: 0.875rem;
 }
 
+/* Scroll hint banner */
+.scroll-hint-banner {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  border-bottom: 1px solid #3b82f6;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  animation: slideDown 0.5s ease-out;
+}
+
+.scroll-hint-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 100%;
+}
+
+.scroll-hint-content span {
+  color: #1e40af;
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.scroll-hint-icon {
+  font-size: 1.2rem;
+  animation: bounce 2s infinite;
+}
+
+.scroll-hint-close {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.scroll-hint-close:hover {
+  background: #2563eb;
+  transform: scale(1.05);
+}
 
 @keyframes slideDown {
   from {
