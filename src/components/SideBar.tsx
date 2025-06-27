@@ -1,27 +1,27 @@
-"use client"
 
 import "../styles/SideBar.css"
+import { SectionType } from "./Dashbord"
+
 
 const menuItems = [
   {
     title: "Employees",
-    url: "#employees",
+    section: "employees" as SectionType,
     icon: "👥",
-    isActive: true,
   },
   {
     title: "Attendance",
-    url: "#attendance",
+    section: "attendance" as SectionType,
     icon: "📅",
   },
   {
     title: "Progress",
-    url: "#progress",
+    section: "progress" as SectionType,
     icon: "📈",
   },
   {
     title: "Profile",
-    url: "#profile",
+    section: "profile" as SectionType,
     icon: "👤",
   },
 ]
@@ -30,9 +30,11 @@ interface AppSidebarProps {
   isOpen: boolean
   onToggle: () => void
   onClose: () => void
+  activeSection: SectionType
+  onSectionChange: (section: SectionType) => void
 }
 
-export function AppSidebar({ isOpen, onToggle, onClose }: AppSidebarProps) {
+export function AppSidebar({ isOpen, onToggle, onClose, activeSection, onSectionChange }: AppSidebarProps) {
   const handleLogout = () => {
     console.log("Logging out...")
     // Add your logout logic here
@@ -42,6 +44,10 @@ export function AppSidebar({ isOpen, onToggle, onClose }: AppSidebarProps) {
     if (isOpen) {
       onClose()
     }
+  }
+
+  const handleMenuClick = (section: SectionType) => {
+    onSectionChange(section)
   }
 
   return (
@@ -66,19 +72,13 @@ export function AppSidebar({ isOpen, onToggle, onClose }: AppSidebarProps) {
             <ul className="sidebar-menu">
               {menuItems.map((item) => (
                 <li key={item.title} className="sidebar-menu-item">
-                  <a
-                    href={item.url}
-                    className={`sidebar-menu-button ${item.isActive ? "active" : ""}`}
-                    onClick={() => {
-                      // Close sidebar on mobile when clicking menu item
-                      if (window.innerWidth <= 768) {
-                        onClose()
-                      }
-                    }}
+                  <button
+                    className={`sidebar-menu-button ${activeSection === item.section ? "active" : ""}`}
+                    onClick={() => handleMenuClick(item.section)}
                   >
                     <span className="icon">{item.icon}</span>
                     <span>{item.title}</span>
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
