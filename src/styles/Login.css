@@ -1,0 +1,139 @@
+.login-page {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f7fa;
+}
+.login-left {
+  flex: 1;
+  background-image: url('../assets/about.jpg'); 
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.login-left::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}   
+.overlay {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  padding: 20px;
+}
+
+.overlay img {
+  width: 100px;
+  margin-bottom: 15px;
+}
+
+.title-orange {
+  font-size: 2rem;
+  color: orange;
+  margin-bottom: 10px;
+}
+
+.text-lightblue {
+  color: #7dd3fc;
+  font-size: 1.1rem;
+}
+
+.text-yellow {
+  color: #facc15;
+  font-size: 1.1rem;
+}
+
+/* Right Panel */
+.login-right {
+  flex: 1;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+}
+
+.login-right h2 {
+  font-size: 1.8rem;
+  color: #1e3a8a;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #1e40af;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #2563eb;
+}
+
+.register-text {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.register-text button {
+  background: none;
+  border: none;
+  color: #1d4ed8;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.register-text button:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .login-page {
+    flex-direction: column;
+  }
+
+  .login-left, .login-right {
+    flex: unset;
+    width: 100%;
+  }
+
+  .overlay {
+    position: static;
+    transform: none;
+    margin: 40px auto;
+  }
+}
