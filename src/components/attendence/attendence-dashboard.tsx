@@ -201,7 +201,7 @@ export function AttendanceDashboard({ employees, loading }: AttendanceDashboardP
                                   second: "2-digit",
                                   hour12: false,
                                 })
-                              : "--:--:--";
+                              : "Missing Swipe";
 
                             const checkOutTime = checkOuts[idx]
                               ? new Date(checkOuts[idx].timestamp).toLocaleTimeString("en-IN", {
@@ -222,7 +222,12 @@ export function AttendanceDashboard({ employees, loading }: AttendanceDashboardP
                                   padding: "2px 0",
                                 }}
                               >
-                                <span style={{ width: "50%", color: "green" }}>{checkInTime}</span>
+                                <span style={{ 
+                                  width: "50%",
+                                  color: checkInTime === "Missing Swipe" ? "red" : "green",
+                                   }}>
+                                    {checkInTime}
+                                </span>
                                 <span
                                   style={{
                                     width: "50%",
