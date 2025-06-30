@@ -2,7 +2,9 @@
 
 import type { Employee } from"../Dashbord"
 import "../../styles/ProgressDashboard.css"
-
+import { Goal } from 'lucide-react';
+import { Check } from 'lucide-react';
+import { Plus } from 'lucide-react';
 interface ProgressDashboardProps {
   employees: Employee[]
   loading: boolean
@@ -13,14 +15,14 @@ export function ProgressDashboard({ employees, loading }: ProgressDashboardProps
     <div className="progress-container">
       <div className="progress-stats">
         <div className="stat-card">
-          <div className="stat-icon">🎯</div>
+          <div className="stat-icon"><Goal/></div>
           <div className="stat-content">
             <h3>Active Goals</h3>
             <p className="stat-number">0</p>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">✅</div>
+          <div className="stat-icon"><Check/></div>
           <div className="stat-content">
             <h3>Completed</h3>
             <p className="stat-number">0</p>
@@ -46,7 +48,7 @@ export function ProgressDashboard({ employees, loading }: ProgressDashboardProps
         <div className="goals-card">
           <div className="goals-header">
             <h2>Goal Management</h2>
-            <button className="btn btn-primary">➕ Add New Goal</button>
+            <button className="btn btn-primary"><Plus/> Add New Goal</button>
           </div>
           <div className="goals-summary">
             <div className="progress-circle">

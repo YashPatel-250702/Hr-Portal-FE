@@ -216,6 +216,7 @@
   letter-spacing: 0.025em;
   position: relative;
   overflow: hidden;
+  
 }
 
 .btn-sm {
@@ -240,6 +241,7 @@
   background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   color: white;
   box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+  height: 50px;
 }
 
 .btn-danger:hover {
@@ -363,6 +365,36 @@
     font-size: 0.8rem;
   }
 }
+
+.add-employee-button {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  padding: 1.25rem 2.5rem;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+  text-transform: none;
+  letter-spacing: 0.025em;
+  position: relative;
+  overflow: hidden;
+  height: 60px;
+
+}
+
+.add-employee-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-icon {
+  font-size: 1.2rem;
+}
+
 
 @media (max-width: 480px) {
   .employee-table {
