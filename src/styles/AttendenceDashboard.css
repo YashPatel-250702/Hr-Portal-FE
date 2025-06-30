@@ -390,3 +390,7 @@
     grid-template-columns: 1fr;
   }
 }
+.status-badge-weeklly-off{
+  color: red;
+  font-weight: 400;
+}
