@@ -1,13 +1,16 @@
 
 import type React from "react"
-
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import type { Employee } from "../Dashbord"
 import { EmployeeForm } from "./employee-form"
 import "../../styles/EmployeeList.css"
 import axios from "axios"
 import { toast } from "react-toastify"
-
+import DeletePopUp from "../PopUp"
+import { Pencil } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
+import { UserRoundPlus } from 'lucide-react';
+import { Users } from 'lucide-react';
 interface EmployeeListProps {
   employees: Employee[]
   loading: boolean
@@ -31,7 +34,9 @@ export function EmployeeList({
   const [formData, setFormData] = useState<Employee | null>(null)
   const [formMode, setFormMode] = useState<"add" | "edit">("add")
   const [formLoading, setFormLoading] = useState(false)
-
+  const [isDeletePopUpOpen, setIsDeletePopUpOpen] = useState(false);
+  const [isDeleteConfirm, setIsDeleteConfirm] = useState(false);
+  const[selectedEmployeeId, setSelectedEmployeeId] = useState('');
   const handleAddClick = () => {
     setFormMode("add")
     setFormData({
@@ -77,25 +82,31 @@ export function EmployeeList({
     }
   }
 
-  const handleDeleteEmployee = async (empId: string) => {
-    if (!window.confirm("Are you sure you want to delete this employee?")) {
-      return
-    }
-
-    try {
-      setFormLoading(true)
-      const res = await axios.delete(`http://localhost:8082/employee/deleteEmployee/${empId}`)
-      if (res.status === 200) {
-        toast.success("Employee deleted successfully!")
-        onRefresh()
+  useEffect(() => {
+    const handleDeleteEmployee = async (empId: string) => {
+  
+      try {
+        setFormLoading(true)
+        const res = await axios.delete(`http://localhost:8082/employee/deleteEmployee/${empId}`)
+        if (res.status === 200) {
+          setSelectedEmployeeId('');
+          setIsDeleteConfirm(false);
+          setIsDeletePopUpOpen(false);
+          toast.success("Employee deleted successfully!")
+          onRefresh()
+        }
+      } catch (error) {
+        console.error("Error deleting employee:", error)
+        toast.error("Failed to delete employee. Please try again.")
+      } finally {
+        setFormLoading(false)
       }
-    } catch (error) {
-      console.error("Error deleting employee:", error)
-      toast.error("Failed to delete employee. Please try again.")
-    } finally {
-      setFormLoading(false)
     }
+    if (isDeleteConfirm && selectedEmployeeId) {
+    handleDeleteEmployee(selectedEmployeeId);
   }
+
+  }, [isDeleteConfirm])
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-IN", {
@@ -112,12 +123,19 @@ export function EmployeeList({
       day: "numeric",
     })
   }
+  const handleDeletePopUp=(empId:string)=>{
+    setIsDeletePopUpOpen(!isDeletePopUpOpen)
+    setSelectedEmployeeId(empId)
+  }
 
   return (
     <div className="employee-list-container">
       <div className="employee-list-header">
-        <button className="add-employee-btn" onClick={handleAddClick} disabled={loading || formLoading}>
-          {loading ? "Loading..." : "➕ Add Employee"}
+        <button className="add-employee-button" onClick={handleAddClick} disabled={loading || formLoading}>
+          {loading ? "Loading..." : <span className="add-employee-content">
+                                      <UserRoundPlus className="add-icon" />
+                                      Add Employee
+                                     </span>}
         </button>
       </div>
 
@@ -182,14 +200,14 @@ export function EmployeeList({
                             onClick={() => handleEditClick(employee)}
                             disabled={loading || formLoading}
                           >
-                            ✏️ Edit
+                           <Pencil/> Edit
                           </button>
                           <button
                             className="btn btn-danger btn-sm"
-                            onClick={() => handleDeleteEmployee(employee.employeeId)}
+                            onClick={() => handleDeletePopUp(employee.employeeId)}
                             disabled={loading || formLoading}
                           >
-                            🗑️ Delete
+                            <Trash2/> Delete
                           </button>
                         </div>
                       </td>
@@ -199,7 +217,7 @@ export function EmployeeList({
                   <tr>
                     <td colSpan={12} className="empty-state">
                       <div className="empty-state-content">
-                        <div className="empty-state-icon">👥</div>
+                        <div className="empty-state-icon"><Users/></div>
                         <div>
                           <h3>No employees found</h3>
                           <p>Start by adding your first employee to the system</p>
@@ -207,7 +225,9 @@ export function EmployeeList({
                       </div>
                     </td>
                   </tr>
+                  
                 )}
+                {isDeletePopUpOpen && <DeletePopUp setIsDeletePopUpOpen={setIsDeletePopUpOpen} setIsDeleteConfirm={setIsDeleteConfirm} />}
               </tbody>
             </table>
           </div>

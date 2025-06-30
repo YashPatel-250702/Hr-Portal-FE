@@ -2,6 +2,12 @@ import { Employee } from "../Dashbord";
 import "../../styles/AttendenceDashboard.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { UsersRound } from 'lucide-react';
+import { Check } from 'lucide-react';
+import { X } from 'lucide-react';
+import { AlarmClockCheck } from 'lucide-react';
+import { Clock2 } from 'lucide-react';
+import { ClipboardMinus } from 'lucide-react';
 
 interface AttendanceEvent {
   type: string;
@@ -31,6 +37,8 @@ export function AttendanceDashboard({ employees, loading }: AttendanceDashboardP
     let day = d.getDay();
     return daysOfWeek[day];
   })
+
+  
 
   const [liveTime, setLiveTime] = useState<string>(() =>
     new Date().toLocaleTimeString("en-IN", {
@@ -88,28 +96,28 @@ export function AttendanceDashboard({ employees, loading }: AttendanceDashboardP
       {/* STATS */}
       <div className="attendance-stats">
         <div className="stat-card">
-          <div className="stat-icon">👥</div>
+          <div className="stat-icon"><UsersRound/></div>
           <div className="stat-content">
             <h3>Total Employees</h3>
             <p className="stat-number">{employees.length}</p>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">✅</div>
+          <div className="stat-icon"><Check/></div>
           <div className="stat-content">
             <h3>Present Today</h3>
             <p className="stat-number">{attendanceData.length}</p>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">❌</div>
+          <div className="stat-icon"><X/></div>
           <div className="stat-content">
             <h3>Absent Today</h3>
-            <p className="stat-number">{employees.length - attendanceData.length}</p>
+            <p className="stat-number">{currentDay!=="Sunday"?employees.length - attendanceData.length:0}</p>
           </div>
         </div>
         <div className="stat-card">
-          <div className="stat-icon">⏰</div>
+          <div className="stat-icon"><AlarmClockCheck/></div>
           <div className="stat-content">
             <h3>Late Arrivals</h3>
             <p className="stat-number">0</p>
@@ -128,8 +136,8 @@ export function AttendanceDashboard({ employees, loading }: AttendanceDashboardP
             </div>
           </div>
           <div className="clock-actions">
-            <button className="btn btn-success">🕐 Clock In</button>
-            <button className="btn btn-danger">🕐 Clock Out</button>
+            <button className="btn btn-success " ><Clock2/> Clock In</button>
+            <button className="btn btn-danger"><Clock2/> Clock Out</button>
           </div>
         </div>
 
@@ -138,8 +146,8 @@ export function AttendanceDashboard({ employees, loading }: AttendanceDashboardP
           <div className="quick-actions">
             <button className="btn btn-outline">📊 View Reports</button>
             <button className="btn btn-outline">📅 Mark Leave</button>
-            <button className="btn btn-outline">⏰ Overtime Request</button>
-            <button className="btn btn-outline">📋 Export Data</button>
+            <button className="btn btn-outline"><Clock2/> Overtime Request</button>
+            <button className="btn btn-outline"><ClipboardMinus/>Export Data</button>
           </div>
         </div>
       </div>

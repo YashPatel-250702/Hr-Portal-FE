@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 export default function Login() {
   const navigate = useNavigate();
+  const [hasError, setHasError] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -31,8 +32,9 @@ export default function Login() {
       }
       
     } catch (error:any) {
+      setHasError(true);
       console.error("Login failed:", error);
-      toast.error(error.response.data || "Login failed. Invalid Credentials.");
+     
     }
 
   }
@@ -52,11 +54,11 @@ export default function Login() {
         <form onSubmit={handleFormSubmit}>
           <div className="form-group">
             <label htmlFor='email'>Email</label>
-            <input type="email" id='email' value={formData.email} onChange={handleFormChange} required />
+            <input type="email" id='email' className={hasError ? "red-border" : ""} value={formData.email} onChange={handleFormChange} required />
           </div>
           <div className="form-group">
             <label htmlFor='password'>Password</label>
-            <input type="password" id='password' value={formData.password} onChange={handleFormChange} required />
+            <input type="password" id='password' className={hasError ? "red-border" : ""} value={formData.password} onChange={handleFormChange} required />
           </div>
           <button type="submit" className="login-btn">Login</button>
         </form>
