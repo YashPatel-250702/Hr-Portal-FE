@@ -21,10 +21,16 @@ interface AttendanceDashboardProps {
 }
 
 export function AttendanceDashboard({ employees, loading }: AttendanceDashboardProps) {
+  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const [attendanceData, setAttendanceData] = useState<AttendanceRecord[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>(() => {
     return new Date().toISOString().split("T")[0];
   });
+  const [currentDay,setCurrentDay] = useState<string>(() => {
+    const d = new Date();
+    let day = d.getDay();
+    return daysOfWeek[day];
+  })
 
   const [liveTime, setLiveTime] = useState<string>(() =>
     new Date().toLocaleTimeString("en-IN", {
@@ -67,6 +73,7 @@ export function AttendanceDashboard({ employees, loading }: AttendanceDashboardP
 
   const handleDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
+    setCurrentDay(daysOfWeek[new Date(e.target.value).getDay()]);
   };
 
   const currentDateFormatted = new Date(selectedDate).toLocaleDateString("en-IN", {
@@ -161,6 +168,7 @@ export function AttendanceDashboard({ employees, loading }: AttendanceDashboardP
                 <th>Employee</th>
                 <th>Department</th>
                 <th>Check In / Check Out</th>
+                <th>Day</th>
                 <th>Working Hours</th>
                 <th>Status</th>
               </tr>
@@ -192,63 +200,76 @@ export function AttendanceDashboard({ employees, loading }: AttendanceDashboardP
                       </td>
                       <td>{employee.departmentName}</td>
                       <td>
-                        {maxEvents > 0 ? (
-                          [...Array(maxEvents)].map((_, idx) => {
-                            const checkInTime = checkIns[idx]
-                              ? new Date(checkIns[idx].timestamp).toLocaleTimeString("en-IN", {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                  second: "2-digit",
-                                  hour12: false,
-                                })
-                              : "Missing Swipe";
+                        {currentDay !== "Sunday" ? (
+                          maxEvents > 0 ? (
+                            [...Array(maxEvents)].map((_, idx) => {
+                              const checkInTime = checkIns[idx]
+                                ? new Date(checkIns[idx].timestamp).toLocaleTimeString("en-IN", {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    second: "2-digit",
+                                    hour12: false,
+                                  })
+                                : "Missing Swipe";
 
-                            const checkOutTime = checkOuts[idx]
-                              ? new Date(checkOuts[idx].timestamp).toLocaleTimeString("en-IN", {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                  second: "2-digit",
-                                  hour12: false,
-                                })
-                              : "Missing Swipe";
+                              const checkOutTime = checkOuts[idx]
+                                ? new Date(checkOuts[idx].timestamp).toLocaleTimeString("en-IN", {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    second: "2-digit",
+                                    hour12: false,
+                                  })
+                                : "Missing Swipe";
 
-                            return (
-                              <div
-                                key={idx}
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  fontSize: "0.9rem",
-                                  padding: "2px 0",
-                                }}
-                              >
-                                <span style={{ 
-                                  width: "50%",
-                                  color: checkInTime === "Missing Swipe" ? "red" : "green",
-                                   }}>
-                                    {checkInTime}
-                                </span>
-                                <span
+                              return (
+                                <div
+                                  key={idx}
                                   style={{
-                                    width: "50%",
-                                    color: checkOutTime === "Missing Swipe" ? "red" : "green",
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    fontSize: "0.9rem",
+                                    padding: "2px 0",
                                   }}
                                 >
-                                  {checkOutTime}
-                                </span>
-                              </div>
-                            );
-                          })
+                                  <span style={{ 
+                                    width: "50%",
+                                    color: checkInTime === "Missing Swipe" ? "red" : "green",
+                                  }}>
+                                    {checkInTime}
+                                  </span>
+                                  <span
+                                    style={{
+                                      width: "50%",
+                                      color: checkOutTime === "Missing Swipe" ? "red" : "green",
+                                    }}
+                                  >
+                                    {checkOutTime}
+                                  </span>
+                                </div>
+                              );
+                            })
+                          ) : (
+                            "--:--"
+                          )
                         ) : (
-                          "--:--"
+                          <div className="status-badge-weeklly-off">
+                            Weeklyy off
+                          </div>
                         )}
+                        
                       </td>
+                      <td>{currentDay}</td>
                       <td>{record ? `${record.totalHours} ` : "0 hrs"}</td>
                       <td>
-                        {record ? (
-                          <span className="status-badge status-present">Present</span>
+                        {currentDay!=="Sunday" ? (
+                          (record ? (
+                            <span className="status-badge status-present">Present</span>
+                          ) : (
+                            <span className="status-badge status-absent">Absent</span>
+                          )
+                          )
                         ) : (
-                          <span className="status-badge status-absent">Absent</span>
+                          <span className="status-badge-weeklly-off">Weeklyy off</span>
                         )}
                       </td>
                     </tr>
