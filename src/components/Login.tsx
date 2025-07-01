@@ -27,6 +27,7 @@ export default function Login() {
     try {
       const response=await axios.post("http://localhost:8082/auth/login", formData);
       if(response.status === 200) {
+        setHasError(false);
         toast.success("Login successful!");
         navigate("/dashboard"); 
       }
